@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { ChevronDown, DollarSign, FileText, ImageIcon, Package2 } from 'lucide-react';
 import { InputField } from './InputField';
 import { TextareaField } from './TextareaField';
 import { TextEditor } from './TextEditor';
 import { ImageUpload } from './ImageUpload';
-import { Package, DollarSign, Ruler, FileText } from 'lucide-react';
 
 interface ProductFormProps {
   productName: string;
@@ -24,14 +23,28 @@ interface ProductFormProps {
   onShortDescriptionChange: (value: string) => void;
   fullDescription: string;
   onFullDescriptionChange: (value: string) => void;
-  weight: string;
-  onWeightChange: (value: string) => void;
-  height: string;
-  onHeightChange: (value: string) => void;
-  width: string;
-  onWidthChange: (value: string) => void;
-  depth: string;
-  onDepthChange: (value: string) => void;
+}
+
+function Section({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: typeof Package2;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-3xl border border-white/8 bg-[#171d27]/92 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.18)] sm:p-6">
+      <div className="mb-5 flex items-center gap-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/8">
+          <Icon className="h-4 w-4 text-emerald-400" />
+        </div>
+        <h3 className="text-xl font-semibold tracking-[-0.02em] text-white">{title}</h3>
+      </div>
+      {children}
+    </section>
+  );
 }
 
 export function ProductForm({
@@ -53,195 +66,117 @@ export function ProductForm({
   onShortDescriptionChange,
   fullDescription,
   onFullDescriptionChange,
-  weight,
-  onWeightChange,
-  height,
-  onHeightChange,
-  width,
-  onWidthChange,
-  depth,
-  onDepthChange
 }: ProductFormProps) {
-  const [productNameStatus, setProductNameStatus] = useState<'default' | 'success' | 'error'>('default');
-  const [skuStatus, setSkuStatus] = useState<'default' | 'success' | 'error'>('default');
+  const productNameStatus = productName.length >= 3 ? 'success' : 'default';
+  const slugStatus = slug.length >= 3 ? 'success' : 'default';
+  const skuStatus = sku.length >= 3 ? 'success' : 'default';
+  const barcodeStatus = barcode.length >= 8 ? 'success' : 'default';
 
   const handleProductNameChange = (value: string) => {
     onProductNameChange(value);
-    if (value.length >= 3) {
-      setProductNameStatus('success');
-      onSlugChange(value.toLowerCase().replace(/\s+/g, '-'));
-    } else {
-      setProductNameStatus('default');
-    }
-  };
-
-  const handleSkuChange = (value: string) => {
-    onSkuChange(value);
-    if (value.length >= 3) {
-      setSkuStatus('success');
-    } else {
-      setSkuStatus('default');
-    }
+    onSlugChange(value.toLowerCase().trim().replace(/\s+/g, '-'));
   };
 
   return (
-    <div className="space-y-3">
-      {/* Informações do produto */}
-      <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <Package className="w-4 h-4 text-teal-400" />
-          <h3 className="text-xs font-semibold text-white">Informações do produto</h3>
+    <div className="space-y-5">
+      <Section icon={Package2} title="Informações do produto">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <InputField
+            label="Nome do produto"
+            value={productName}
+            onChange={handleProductNameChange}
+            required
+            status={productNameStatus}
+            message={productNameStatus === 'success' ? 'Nome válido.' : undefined}
+          />
+
+          <InputField
+            label="Slug (URL amigável)"
+            value={slug}
+            onChange={onSlugChange}
+            required
+            status={slugStatus}
+            message={slugStatus === 'success' ? 'URL amigável válida.' : undefined}
+          />
         </div>
 
-        <InputField
-          label="Nome do produto"
-          value={productName}
-          onChange={handleProductNameChange}
-          placeholder="Ex: Smartphone Galaxy S24"
-          required
-          status={productNameStatus}
-          message={productNameStatus === 'success' ? 'Nome válido' : undefined}
-        />
-
-        <InputField
-          label="Slug (URL amigável)"
-          value={slug}
-          onChange={onSlugChange}
-          placeholder="smartphone-galaxy-s24"
-        />
-
-        <div className="grid grid-cols-3 gap-4">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-[1.1fr_1.1fr_0.9fr]">
           <InputField
             label="SKU"
             value={sku}
-            onChange={handleSkuChange}
-            placeholder="PROD-001"
+            onChange={onSkuChange}
             required
             status={skuStatus}
-            message={skuStatus === 'success' ? 'SKU disponível' : undefined}
+            message={skuStatus === 'success' ? 'SKU disponível.' : undefined}
           />
 
           <InputField
             label="Código de barras"
             value={barcode}
             onChange={onBarcodeChange}
-            placeholder="7891234567890"
+            status={barcodeStatus}
           />
 
-          <InputField
-            label="Classe fiscal"
-            value={fiscalClass}
-            onChange={onFiscalClassChange}
-            placeholder="NCM 8517.12.31"
-          />
+          <div className="space-y-2">
+            <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
+              Classe fiscal
+            </label>
+            <div className="flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-[#131923] px-4 text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+              <span>{fiscalClass}</span>
+              <ChevronDown className="h-4 w-4 text-slate-500" />
+            </div>
+          </div>
         </div>
-      </div>
+      </Section>
 
-      {/* Preços */}
-      <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <DollarSign className="w-4 h-4 text-teal-400" />
-          <h3 className="text-xs font-semibold text-white">Preços</h3>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
+      <Section icon={DollarSign} title="Preços">
+        <div className="grid gap-4 lg:grid-cols-2">
           <InputField
             label="Preço de venda"
             value={price}
             onChange={onPriceChange}
-            placeholder="R$ 0,00"
-            type="text"
             required
-            icon={<span className="text-sm">R$</span>}
+            status="success"
+            message="Preço válido."
+            icon={<span className="text-base text-slate-300">R$</span>}
           />
 
           <InputField
             label="Preço promocional"
             value={promoPrice}
             onChange={onPromoPriceChange}
-            placeholder="R$ 0,00"
-            type="text"
-            icon={<span className="text-sm">R$</span>}
+            icon={<span className="text-base text-slate-300">R$</span>}
+            helperText="Deixe em branco para não usar promoção."
           />
         </div>
-      </div>
+      </Section>
 
-      {/* Conteúdo */}
-      <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-teal-400" />
-          <h3 className="text-xs font-semibold text-white">Conteúdo</h3>
-        </div>
-
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-300">
-            Resumo curto
-          </label>
-          <TextEditor
+      <Section icon={FileText} title="Conteúdo">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.35fr]">
+          <TextareaField
+            label="Resumo curto"
             value={shortDescription}
             onChange={onShortDescriptionChange}
-            placeholder="Escreva uma breve descrição do produto que será exibida em listagens e resumos..."
-            rows={3}
+            required
+            rows={4}
+            showCounter
+            maxLength={150}
+          />
+
+          <TextEditor
+            value={fullDescription}
+            onChange={onFullDescriptionChange}
+            label="Descrição completa"
+            required
+            rows={4}
+            maxLength={2000}
           />
         </div>
+      </Section>
 
-        <TextareaField
-          label="Descrição completa"
-          value={fullDescription}
-          onChange={onFullDescriptionChange}
-          placeholder="Descrição detalhada do produto, características, benefícios..."
-          rows={4}
-          required
-        />
-      </div>
-
-      {/* Imagens */}
-      <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4">
-        <h3 className="text-xs font-semibold text-white mb-3">Imagens do produto</h3>
+      <Section icon={ImageIcon} title="Imagens do produto">
         <ImageUpload />
-      </div>
-
-      {/* Dimensões e pesos */}
-      <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <Ruler className="w-4 h-4 text-teal-400" />
-          <h3 className="text-xs font-semibold text-white">Dimensões e pesos</h3>
-        </div>
-
-        <div className="grid grid-cols-4 gap-4">
-          <InputField
-            label="Peso (kg)"
-            value={weight}
-            onChange={onWeightChange}
-            placeholder="0.500"
-            type="text"
-          />
-
-          <InputField
-            label="Altura (cm)"
-            value={height}
-            onChange={onHeightChange}
-            placeholder="15"
-            type="text"
-          />
-
-          <InputField
-            label="Largura (cm)"
-            value={width}
-            onChange={onWidthChange}
-            placeholder="10"
-            type="text"
-          />
-
-          <InputField
-            label="Profundidade (cm)"
-            value={depth}
-            onChange={onDepthChange}
-            placeholder="5"
-            type="text"
-          />
-        </div>
-      </div>
+      </Section>
     </div>
   );
 }

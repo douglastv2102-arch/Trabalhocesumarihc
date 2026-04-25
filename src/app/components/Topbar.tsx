@@ -1,32 +1,54 @@
-import { Eye, LogOut, Bell, Search } from 'lucide-react';
+import { Bell, ChevronDown, Eye, Home, ShieldCheck } from 'lucide-react';
 
 export function Topbar() {
   return (
-    <header className="h-14 bg-[#0a0a0a] border-b border-gray-800 flex items-center justify-between px-5">
-      <div>
-        <h2 className="text-base font-bold text-white">Cadastro de produtos</h2>
-        <p className="text-xs text-gray-500">Adicione e gerencie os produtos da sua loja</p>
-      </div>
+    <header className="border-b border-white/8 bg-[#0a0f17]/95 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1480px] items-start justify-between gap-4 px-4 py-5 sm:px-6">
+        <div className="min-w-0">
+          <div className="mb-3 flex flex-wrap items-center gap-2 text-sm text-slate-400">
+            <Home className="h-4 w-4 text-slate-500" />
+            <span>Dashboard</span>
+            <span className="text-slate-600">›</span>
+            <span>Produtos</span>
+            <span className="text-slate-600">›</span>
+            <span className="font-medium text-slate-100">Cadastro de produtos</span>
+          </div>
 
-      <div className="flex items-center gap-3">
-        <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
-          <Search className="w-4 h-4" />
-        </button>
+          <h1 className="text-3xl font-semibold tracking-[-0.03em] text-white">
+            Cadastro de produtos
+          </h1>
+          <p className="mt-2 text-sm text-slate-400">
+            Preencha as informações para cadastrar um novo produto na sua loja.
+          </p>
+        </div>
 
-        <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-teal-500 rounded-full"></span>
-        </button>
+        <div className="hidden items-center gap-3 lg:flex">
+          <button className="flex h-12 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white transition hover:border-white/20 hover:bg-white/[0.06]">
+            <Eye className="h-4 w-4 text-slate-300" />
+            Ver loja
+          </button>
 
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all border border-gray-700">
-          <Eye className="w-3.5 h-3.5" />
-          <span className="text-xs font-medium">Ver loja</span>
-        </button>
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-slate-300">
+            <Bell className="h-4 w-4" />
+            <span className="absolute right-2.5 top-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-500 px-1 text-[10px] font-semibold text-white">
+              3
+            </span>
+          </div>
 
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-all border border-red-500/30">
-          <LogOut className="w-3.5 h-3.5" />
-          <span className="text-xs font-medium">Sair</span>
-        </button>
+          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-400 text-sm font-semibold text-white">
+              AD
+            </div>
+            <div>
+              <p className="text-sm font-medium text-white">Admin User</p>
+            </div>
+            <ChevronDown className="h-4 w-4 text-slate-400" />
+          </div>
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
+            <ShieldCheck className="h-4 w-4" />
+          </div>
+        </div>
       </div>
     </header>
   );

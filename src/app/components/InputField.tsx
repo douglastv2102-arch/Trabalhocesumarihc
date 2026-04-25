@@ -1,5 +1,5 @@
-import { CheckCircle2, AlertCircle } from 'lucide-react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface InputFieldProps {
   label: string;
@@ -8,6 +8,7 @@ interface InputFieldProps {
   placeholder?: string;
   status?: 'success' | 'error' | 'default';
   message?: string;
+  helperText?: string;
   type?: string;
   required?: boolean;
   icon?: ReactNode;
@@ -20,57 +21,61 @@ export function InputField({
   placeholder,
   status = 'default',
   message,
+  helperText,
   type = 'text',
   required = false,
-  icon
+  icon,
 }: InputFieldProps) {
-  const borderColors = {
-    success: 'border-teal-500 ring-teal-500/20',
-    error: 'border-red-500 ring-red-500/20',
-    default: 'border-gray-700 focus:border-teal-500 focus:ring-teal-500/20'
+  const statusClasses = {
+    success: 'border-emerald-500/70 focus:border-emerald-400 focus:ring-emerald-500/15',
+    error: 'border-rose-500/70 focus:border-rose-400 focus:ring-rose-500/15',
+    default: 'border-white/10 focus:border-emerald-400 focus:ring-emerald-500/15',
   };
 
-  const messageColors = {
-    success: 'text-teal-400',
-    error: 'text-red-400',
-    default: 'text-gray-500'
+  const messageClasses = {
+    success: 'text-emerald-400',
+    error: 'text-rose-400',
+    default: 'text-slate-500',
   };
 
   return (
-    <div className="space-y-1">
-      <label className="flex items-center gap-1 text-xs font-medium text-gray-300">
+    <div className="space-y-2">
+      <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
         {label}
-        {required && <span className="text-red-400">*</span>}
+        {required ? <span className="text-rose-400">*</span> : null}
       </label>
 
       <div className="relative">
-        {icon && (
-          <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500">
-            {icon}
-          </div>
-        )}
+        {icon ? (
+          <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">{icon}</div>
+        ) : null}
 
         <input
           type={type}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
-          className={`w-full px-3 py-2 text-sm ${icon ? 'pl-8' : ''} bg-[#1a1a1a] border ${borderColors[status]} rounded-lg text-white placeholder:text-gray-600 focus:outline-none focus:ring-1 transition-all`}
+          className={[
+            'h-14 w-full rounded-2xl bg-[#131923] px-4 text-[15px] text-white outline-none transition',
+            'placeholder:text-slate-500 focus:ring-4',
+            icon ? 'pl-12' : '',
+            statusClasses[status],
+          ].join(' ')}
         />
 
-        {status !== 'default' && (
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
-            {status === 'success' && <CheckCircle2 className="w-4 h-4 text-teal-400" />}
-            {status === 'error' && <AlertCircle className="w-4 h-4 text-red-400" />}
+        {status !== 'default' ? (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            {status === 'success' ? (
+              <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+            ) : (
+              <AlertCircle className="h-5 w-5 text-rose-400" />
+            )}
           </div>
-        )}
+        ) : null}
       </div>
 
-      {message && (
-        <p className={`text-xs flex items-center gap-1 ${messageColors[status]}`}>
-          {message}
-        </p>
-      )}
+      {message ? <p className={`text-sm ${messageClasses[status]}`}>{message}</p> : null}
+      {!message && helperText ? <p className="text-sm text-slate-500">{helperText}</p> : null}
     </div>
   );
 }

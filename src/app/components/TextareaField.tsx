@@ -5,6 +5,8 @@ interface TextareaFieldProps {
   placeholder?: string;
   rows?: number;
   required?: boolean;
+  showCounter?: boolean;
+  maxLength?: number;
 }
 
 export function TextareaField({
@@ -13,22 +15,32 @@ export function TextareaField({
   onChange,
   placeholder,
   rows = 3,
-  required = false
+  required = false,
+  showCounter = false,
+  maxLength,
 }: TextareaFieldProps) {
   return (
-    <div className="space-y-1">
-      <label className="flex items-center gap-1 text-xs font-medium text-gray-300">
+    <div className="space-y-2">
+      <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
         {label}
-        {required && <span className="text-red-400">*</span>}
+        {required ? <span className="text-rose-400">*</span> : null}
       </label>
 
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        rows={rows}
-        className="w-full px-3 py-2 text-sm bg-[#1a1a1a] border border-gray-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20 rounded-lg text-white placeholder:text-gray-600 focus:outline-none transition-all resize-none"
-      />
+      <div className="rounded-2xl border border-white/10 bg-[#131923] p-1 focus-within:border-emerald-400/80 focus-within:ring-4 focus-within:ring-emerald-500/15">
+        <textarea
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+          rows={rows}
+          className="min-h-[122px] w-full resize-none rounded-[calc(1rem-2px)] bg-transparent px-4 py-3 text-[15px] text-white outline-none placeholder:text-slate-500"
+        />
+      </div>
+
+      {showCounter && maxLength ? (
+        <p className="text-right text-sm text-slate-400">
+          {value.length}/{maxLength}
+        </p>
+      ) : null}
     </div>
   );
 }
