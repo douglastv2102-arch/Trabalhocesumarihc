@@ -11,14 +11,14 @@ type GalleryItem = {
 const initialGallery: GalleryItem[] = [
   {
     id: 'main',
-    image: '/images/celular-samsung-galaxy-s24-5g-exynos-2400-8gb-256gb_914354.webp',
-    alt: 'Galaxy S24 frontal',
+    image: '/images/galaxy-s24-highlights-color-carousel-global-mo.jpg',
+    alt: 'Galaxy S24 em destaque',
     featured: true,
   },
   {
     id: 'side-1',
-    image: '/images/galaxy-s24-highlights-color-carousel-global-mo.jpg',
-    alt: 'Galaxy S24 em destaque',
+    image: '/images/celular-samsung-galaxy-s24-5g-exynos-2400-8gb-256gb_914354.webp',
+    alt: 'Galaxy S24 frontal',
   },
   {
     id: 'side-2',
