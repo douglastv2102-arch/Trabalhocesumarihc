@@ -4,35 +4,31 @@ import { useState } from 'react';
 type GalleryItem = {
   id: string;
   image: string;
+  alt: string;
   featured?: boolean;
 };
 
 const initialGallery: GalleryItem[] = [
   {
     id: 'main',
-    image:
-      'linear-gradient(135deg, rgba(196,199,255,0.95), rgba(93,96,146,0.9) 45%, rgba(26,29,47,0.95))',
+    image: '/images/celular-samsung-galaxy-s24-5g-exynos-2400-8gb-256gb_914354.webp',
+    alt: 'Galaxy S24 frontal',
     featured: true,
   },
   {
     id: 'side-1',
-    image:
-      'linear-gradient(135deg, rgba(210,212,255,0.9), rgba(106,111,166,0.9) 52%, rgba(35,38,64,1))',
+    image: '/images/galaxy-s24-highlights-color-carousel-global-mo.jpg',
+    alt: 'Galaxy S24 em destaque',
   },
   {
     id: 'side-2',
-    image:
-      'linear-gradient(180deg, rgba(208,210,255,0.9), rgba(86,89,144,0.92) 40%, rgba(33,36,61,1))',
+    image: '/images/galaxy-s24-ultra-highlights-color-titanium-gray-back-mo.jpg',
+    alt: 'Galaxy S24 Ultra traseira',
   },
   {
     id: 'side-3',
-    image:
-      'linear-gradient(140deg, rgba(185,189,235,0.95), rgba(92,97,155,0.92) 55%, rgba(28,31,52,1))',
-  },
-  {
-    id: 'side-4',
-    image:
-      'linear-gradient(135deg, rgba(211,213,243,0.95), rgba(87,91,139,0.92) 48%, rgba(29,31,50,1))',
+    image: '/images/s24-ultra-vaza.avif',
+    alt: 'Galaxy S24 Ultra visual promocional',
   },
 ];
 
@@ -43,6 +39,8 @@ export function ImageUpload() {
     setGallery((current) => current.filter((item) => item.id !== id));
   };
 
+  const mainImage = gallery[0];
+
   return (
     <div className="space-y-4">
       <div className="grid gap-4 lg:grid-cols-[1.05fr_2.2fr]">
@@ -52,21 +50,27 @@ export function ImageUpload() {
           </p>
 
           <div className="relative h-[118px] overflow-hidden rounded-2xl border border-emerald-500/40 bg-[#131923]">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: gallery[0]?.image,
-              }}
-            />
+            {mainImage ? (
+              <img
+                src={mainImage.image}
+                alt={mainImage.alt}
+                className="h-full w-full object-cover"
+              />
+            ) : null}
+
             <div className="absolute left-3 top-3 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white">
               Principal
             </div>
-            <button
-              type="button"
-              className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 text-white"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
+
+            {mainImage ? (
+              <button
+                type="button"
+                onClick={() => removeImage(mainImage.id)}
+                className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 text-white"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            ) : null}
           </div>
         </div>
 
@@ -79,7 +83,8 @@ export function ImageUpload() {
                 key={item.id}
                 className="relative h-[86px] overflow-hidden rounded-2xl border border-white/10 bg-[#131923]"
               >
-                <div className="absolute inset-0" style={{ backgroundImage: item.image }} />
+                <img src={item.image} alt={item.alt} className="h-full w-full object-cover" />
+
                 <button
                   type="button"
                   onClick={() => removeImage(item.id)}
@@ -102,7 +107,7 @@ export function ImageUpload() {
       </div>
 
       <p className="text-sm text-slate-500">
-        Formatos aceitos: PNG, JPG ou WEBP. Tamanho máximo: 5MB por imagem.
+        Formatos aceitos: PNG, JPG, AVIF ou WEBP. Tamanho máximo: 5MB por imagem.
       </p>
     </div>
   );
