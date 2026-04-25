@@ -54,6 +54,14 @@ function Section({
   );
 }
 
+function RequiredBadge() {
+  return (
+    <span className="inline-flex items-center rounded-full border border-rose-400/25 bg-rose-400/10 px-3 py-1 text-xs font-semibold text-rose-300">
+      Obrigatório
+    </span>
+  );
+}
+
 export function ProductForm({
   productName,
   onProductNameChange,
@@ -194,7 +202,10 @@ export function ProductForm({
         </div>
       </Section>
 
-      <Section icon={FileText} title="Conteúdo">
+      <Section icon={FileText} title="Conteúdo" action={<RequiredBadge />}>
+        <p className="mb-4 text-sm text-slate-400">
+          Informe o resumo e a descrição completa para orientar a compra do cliente.
+        </p>
         <div className="grid gap-4 xl:grid-cols-[0.9fr_1.35fr]">
           <TextareaField
             label="Resumo curto"
@@ -217,7 +228,10 @@ export function ProductForm({
         </div>
       </Section>
 
-      <Section icon={ImageIcon} title="Imagens do produto">
+      <Section icon={ImageIcon} title="Imagens do produto" action={<RequiredBadge />}>
+        <p className="mb-4 text-sm text-slate-400">
+          A imagem principal é obrigatória para publicar o produto na loja.
+        </p>
         <ImageUpload />
       </Section>
     </div>

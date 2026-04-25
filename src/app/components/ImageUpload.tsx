@@ -75,7 +75,7 @@ export function ImageUpload() {
         </div>
 
         <div>
-          <p className="mb-2 text-sm font-medium text-slate-200">Galeria de imagens (até 6)</p>
+          <p className="mb-2 text-sm font-medium text-slate-200">Galeria complementar</p>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {gallery.slice(1).map((item) => (
@@ -107,7 +107,9 @@ export function ImageUpload() {
       </div>
 
       <p className="text-sm text-slate-500">
-        Formatos aceitos: PNG, JPG, AVIF ou WEBP. Tamanho máximo: 5MB por imagem.
+        Até 5 imagens no total: 1 principal e até 4 complementares. Formatos aceitos: PNG, JPG,
+        AVIF ou WEBP.
+        Tamanho máximo: 5MB por imagem.
       </p>
     </div>
   );

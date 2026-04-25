@@ -9,6 +9,8 @@ import { RightPanel } from './components/RightPanel';
 export default function App() {
   const [activeMenu, setActiveMenu] = useState('products');
   const [isSaving, setIsSaving] = useState(false);
+  const [showSavedNotice, setShowSavedNotice] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [productName, setProductName] = useState('Smartphone Galaxy S24');
   const [slug, setSlug] = useState('smartphone-galaxy-s24');
@@ -31,32 +33,50 @@ export default function App() {
   const [minQuantity, setMinQuantity] = useState('5');
   const [categories, setCategories] = useState<string[]>(['Eletrônicos', 'Smartphones']);
 
+  const requiredFields = [
+    { label: 'Nome do produto', value: productName },
+    { label: 'Slug', value: slug },
+    { label: 'SKU', value: sku },
+    { label: 'Preço de venda', value: price },
+    { label: 'Resumo curto', value: shortDescription },
+    { label: 'Descrição completa', value: fullDescription },
+    { label: 'Categoria', value: categories.length > 0 ? 'selected' : '' },
+    { label: 'Quantidade em estoque', value: controlStock ? quantity : 'stock-disabled' },
+    { label: 'Alerta mínimo', value: controlStock ? minQuantity : 'stock-disabled' },
+  ];
+  const pendingRequiredFields = requiredFields
+    .filter((field) => !field.value)
+    .map((field) => field.label);
+  const completedRequiredFields = requiredFields.length - pendingRequiredFields.length;
+  const requiredProgress = Math.round((completedRequiredFields / requiredFields.length) * 100);
+  const stock = Number(quantity);
+  const minStock = Number(minQuantity);
+  const hasLowStock = controlStock && stock > 0 && minStock > 0 && stock <= minStock;
+  const canSave = completedRequiredFields === requiredFields.length && !isSaving;
+
   useEffect(() => {
-    if (!controlStock) {
+    if (!hasLowStock) {
       return;
     }
 
-    const stock = Number(quantity);
-    const minStock = Number(minQuantity);
-
-    if (stock > 0 && stock <= minStock) {
-      toast.warning('Estoque baixo', {
-        description: `Restam ${stock} unidades em estoque.`,
-      });
-    }
-  }, [controlStock, minQuantity, quantity]);
+    toast.warning('Estoque baixo', {
+      description: `Restam ${stock} unidades em estoque.`,
+    });
+  }, [hasLowStock, stock]);
 
   const handleSaveProduct = async () => {
-    if (!productName || !slug || !sku || !price || !fullDescription || !minQuantity) {
+    if (!canSave) {
       toast.error('Campo obrigatório', {
         description: 'Preencha os campos obrigatórios antes de salvar.',
       });
       return;
     }
 
+    setShowSavedNotice(false);
     setIsSaving(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSaving(false);
+    setShowSavedNotice(true);
 
     toast.success('Produto salvo com sucesso!', {
       description: 'As alterações foram aplicadas.',
@@ -85,10 +105,15 @@ export default function App() {
       />
 
       <div className="relative flex min-h-screen">
-        <Sidebar activeMenu={activeMenu} onMenuChange={setActiveMenu} />
+        <Sidebar
+          activeMenu={activeMenu}
+          onMenuChange={setActiveMenu}
+          mobileOpen={isMobileMenuOpen}
+          onMobileClose={() => setIsMobileMenuOpen(false)}
+        />
 
         <div className="ml-0 flex min-h-screen min-w-0 flex-1 flex-col xl:ml-[252px]">
-          <Topbar />
+          <Topbar onOpenMenu={() => setIsMobileMenuOpen(true)} />
 
           <main className="flex-1 overflow-y-auto px-3 pb-6 pt-3 sm:px-4 lg:px-6">
             <div className="mx-auto flex max-w-[1480px] flex-col gap-5 2xl:flex-row">
@@ -130,6 +155,14 @@ export default function App() {
                 onCategoriesChange={setCategories}
                 onSave={handleSaveProduct}
                 isSaving={isSaving}
+                canSave={canSave}
+                showSavedNotice={showSavedNotice}
+                onDismissSavedNotice={() => setShowSavedNotice(false)}
+                completedRequiredFields={completedRequiredFields}
+                totalRequiredFields={requiredFields.length}
+                requiredProgress={requiredProgress}
+                pendingRequiredFields={pendingRequiredFields}
+                hasLowStock={hasLowStock}
               />
             </div>
           </main>
