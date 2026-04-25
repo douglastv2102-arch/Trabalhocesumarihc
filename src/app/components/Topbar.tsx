@@ -36,19 +36,30 @@ export function Topbar({ onOpenMenu }: TopbarProps) {
         </div>
 
         <div className="flex flex-nowrap items-center gap-3 lg:max-w-[420px] lg:justify-end">
-          <button className="flex h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white transition hover:border-white/20 hover:bg-white/[0.06] sm:h-12">
+          <button
+            type="button"
+            className="flex h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm font-medium text-white transition hover:border-white/20 hover:bg-white/[0.06] sm:h-12"
+          >
             <Eye className="h-4 w-4 text-slate-300" />
             Ver loja
           </button>
 
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-slate-300 sm:h-12 sm:w-12">
+          <button
+            type="button"
+            aria-label="Abrir notificações"
+            className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-slate-300 sm:h-12 sm:w-12"
+          >
             <Bell className="h-4 w-4" />
             <span className="absolute right-2.5 top-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-500 px-1 text-[10px] font-semibold text-white">
               3
             </span>
-          </div>
+          </button>
 
-          <div className="flex h-11 w-11 min-w-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-white sm:h-auto sm:w-auto sm:justify-start sm:gap-3 sm:px-3 sm:py-2.5">
+          <button
+            type="button"
+            aria-label="Abrir menu do usuário"
+            className="flex h-11 w-11 min-w-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] text-white sm:h-auto sm:w-auto sm:justify-start sm:gap-3 sm:px-3 sm:py-2.5"
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-400 text-sm font-semibold text-white">
               AD
             </div>
@@ -56,7 +67,7 @@ export function Topbar({ onOpenMenu }: TopbarProps) {
               <p className="truncate text-sm font-medium text-white">Admin User</p>
             </div>
             <ChevronDown className="hidden h-4 w-4 text-slate-400 sm:block" />
-          </div>
+          </button>
 
           <button
             type="button"

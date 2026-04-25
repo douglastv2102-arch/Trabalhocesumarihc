@@ -66,6 +66,7 @@ export function ImageUpload() {
               <button
                 type="button"
                 onClick={() => removeImage(mainImage.id)}
+                aria-label="Remover imagem principal"
                 className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/40 text-white"
               >
                 <X className="h-3.5 w-3.5" />
@@ -88,6 +89,7 @@ export function ImageUpload() {
                 <button
                   type="button"
                   onClick={() => removeImage(item.id)}
+                  aria-label={`Remover imagem ${item.alt}`}
                   className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/45 text-white"
                 >
                   <X className="h-3 w-3" />
@@ -97,6 +99,7 @@ export function ImageUpload() {
 
             <button
               type="button"
+              aria-label="Adicionar imagem complementar"
               className="flex h-[96px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-[#131923] px-3 text-center text-slate-400 transition hover:border-emerald-400/35 hover:text-white sm:h-[112px] xl:h-[86px]"
             >
               <Plus className="mb-2 h-5 w-5" />

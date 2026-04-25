@@ -44,7 +44,7 @@ function Panel({
             <Icon className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="flex min-w-0 flex-wrap items-center gap-2">
-            <h3 className="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">{title}</h3>
+            <h2 className="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">{title}</h2>
             {titleAfter}
           </div>
         </div>
@@ -71,6 +71,9 @@ function Toggle({
       <button
         type="button"
         onClick={() => onChange(!checked)}
+        role="switch"
+        aria-checked={checked}
+        aria-label={title}
         className={[
           'relative mt-1 h-7 w-12 shrink-0 rounded-full transition',
           checked ? 'bg-emerald-400' : 'bg-slate-700',
@@ -210,7 +213,7 @@ export function RightPanel({
         <div className="space-y-5">
           <div className="space-y-2">
             <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
-              Quantidade em estoque <span className="text-rose-400">*</span>
+              <span id="stock-quantity-label">Quantidade em estoque</span> <span className="text-rose-400">*</span>
             </label>
             <div className="flex items-center gap-4">
               <div
@@ -222,6 +225,8 @@ export function RightPanel({
                 ].join(' ')}
               >
                 <input
+                  id="stock-quantity"
+                  aria-labelledby="stock-quantity-label"
                   type="number"
                   value={quantity}
                   onChange={(event) => onQuantityChange(event.target.value)}
@@ -234,6 +239,7 @@ export function RightPanel({
                     type="button"
                     onClick={() => updateNumber(quantity, onQuantityChange, -1)}
                     disabled={!controlStock}
+                    aria-label="Diminuir quantidade em estoque"
                     className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition hover:bg-white/[0.08]"
                   >
                     <Minus className="h-4 w-4" />
@@ -242,6 +248,7 @@ export function RightPanel({
                     type="button"
                     onClick={() => updateNumber(quantity, onQuantityChange, 1)}
                     disabled={!controlStock}
+                    aria-label="Aumentar quantidade em estoque"
                     className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-300 transition hover:bg-emerald-500/20"
                   >
                     <Plus className="h-4 w-4" />
@@ -254,7 +261,7 @@ export function RightPanel({
 
           <div className="space-y-2">
             <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
-              Alerta mínimo <span className="text-rose-400">*</span>
+              <span id="minimum-stock-label">Alerta mínimo</span> <span className="text-rose-400">*</span>
             </label>
             <div className="flex items-center gap-4">
               <div
@@ -267,6 +274,8 @@ export function RightPanel({
                 ].join(' ')}
               >
                 <input
+                  id="minimum-stock"
+                  aria-labelledby="minimum-stock-label"
                   type="number"
                   value={minQuantity}
                   onChange={(event) => onMinQuantityChange(event.target.value)}
@@ -279,6 +288,7 @@ export function RightPanel({
                     type="button"
                     onClick={() => updateNumber(minQuantity, onMinQuantityChange, -1)}
                     disabled={!controlStock}
+                    aria-label="Diminuir alerta mínimo"
                     className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition hover:bg-white/[0.08]"
                   >
                     <Minus className="h-4 w-4" />
@@ -287,6 +297,7 @@ export function RightPanel({
                     type="button"
                     onClick={() => updateNumber(minQuantity, onMinQuantityChange, 1)}
                     disabled={!controlStock}
+                    aria-label="Aumentar alerta mínimo"
                     className="flex h-9 w-9 items-center justify-center rounded-xl border border-amber-500/25 bg-amber-500/10 text-amber-300 transition hover:bg-amber-500/20"
                   >
                     <Plus className="h-4 w-4" />
@@ -319,7 +330,11 @@ export function RightPanel({
             Obrigatório
           </span>
         }
-        action={<button className="text-sm font-medium text-sky-400">Gerenciar categorias</button>}
+        action={
+          <button type="button" className="text-sm font-medium text-sky-400">
+            Gerenciar categorias
+          </button>
+        }
       >
         <div className="space-y-4">
           <p className="text-sm text-slate-400">
@@ -335,6 +350,8 @@ export function RightPanel({
                   <button
                     type="button"
                     onClick={() => toggleCategory(category)}
+                    aria-pressed={checked}
+                    aria-label={`${checked ? 'Remover' : 'Selecionar'} categoria ${category}`}
                     className={[
                       'flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition',
                       checked

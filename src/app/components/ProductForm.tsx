@@ -45,7 +45,7 @@ function Section({
           <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/8">
             <Icon className="h-4 w-4 text-emerald-400" />
           </div>
-          <h3 className="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">{title}</h3>
+          <h2 className="text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">{title}</h2>
         </div>
         {action}
       </div>
@@ -135,13 +135,17 @@ export function ProductForm({
           />
 
           <div className="space-y-2">
-            <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
+            <label id="fiscal-class-label" className="flex items-center gap-1 text-sm font-medium text-slate-200">
               Classe fiscal
             </label>
-            <div className="flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-[#131923] px-4 text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
+            <button
+              type="button"
+              aria-labelledby="fiscal-class-label"
+              className="flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-[#131923] px-4 text-sm text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
+            >
               <span className="truncate">{fiscalClass}</span>
               <ChevronDown className="ml-3 h-4 w-4 shrink-0 text-slate-500" />
-            </div>
+            </button>
           </div>
         </div>
       </Section>
@@ -161,6 +165,9 @@ export function ProductForm({
             <button
               type="button"
               onClick={() => onPromoEnabledChange(!promoEnabled)}
+              role="switch"
+              aria-checked={promoEnabled}
+              aria-label="Usar preço promocional"
               className={[
                 'relative h-7 w-12 rounded-full transition',
                 promoEnabled ? 'bg-emerald-400' : 'bg-slate-700',

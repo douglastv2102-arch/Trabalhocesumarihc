@@ -75,9 +75,9 @@ export function Sidebar({
         <ChartColumn className="h-5 w-5 text-emerald-400" />
       </div>
       <div className="min-w-0">
-        <h2 className="whitespace-nowrap text-[1.75rem] font-semibold leading-none tracking-[-0.04em] text-white">
+        <div className="whitespace-nowrap text-[1.75rem] font-semibold leading-none tracking-[-0.04em] text-white">
           E-commerce
-        </h2>
+        </div>
         <p className="mt-1 text-sm text-slate-400">Painel administrativo</p>
       </div>
     </div>

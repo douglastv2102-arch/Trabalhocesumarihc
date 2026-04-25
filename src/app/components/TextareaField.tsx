@@ -1,3 +1,5 @@
+import { useId } from 'react';
+
 interface TextareaFieldProps {
   label: string;
   value: string;
@@ -19,25 +21,32 @@ export function TextareaField({
   showCounter = false,
   maxLength,
 }: TextareaFieldProps) {
+  const textareaId = useId();
+  const counterId = `${textareaId}-counter`;
+
   return (
     <div className="space-y-2">
-      <label className="flex items-center gap-1 text-sm font-medium text-slate-200">
+      <label htmlFor={textareaId} className="flex items-center gap-1 text-sm font-medium text-slate-200">
         {label}
         {required ? <span className="text-rose-400">*</span> : null}
       </label>
 
       <div className="rounded-2xl border border-white/10 bg-[#131923] p-1 focus-within:border-emerald-400/80 focus-within:ring-4 focus-within:ring-emerald-500/15">
         <textarea
+          id={textareaId}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
           rows={rows}
+          required={required}
+          maxLength={maxLength}
+          aria-describedby={showCounter && maxLength ? counterId : undefined}
           className="min-h-[122px] w-full resize-none rounded-[calc(1rem-2px)] bg-transparent px-4 py-3 text-[15px] text-white outline-none placeholder:text-slate-500"
         />
       </div>
 
       {showCounter && maxLength ? (
-        <p className="text-right text-sm text-slate-400">
+        <p id={counterId} className="text-right text-sm text-slate-400">
           {value.length}/{maxLength}
         </p>
       ) : null}
